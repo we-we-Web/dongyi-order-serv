@@ -13,7 +13,7 @@ public class DongyiOrderServApplication {
 
 	public static void main(String[] args) {
 		Dotenv dotenv = Dotenv.configure()
-				.directory(System.getProperty("user.dir"))
+				.ignoreIfMissing()
 				.load();
 
 		Map<String, String> env = new HashMap<>();
