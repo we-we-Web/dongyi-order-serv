@@ -1,4 +1,4 @@
-package serv.dongyi.order.domain.dto;
+package serv.dongyi.order.controller.dto;
 
 import serv.dongyi.order.domain.Product;
 import java.util.List;
