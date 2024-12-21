@@ -12,6 +12,7 @@ import serv.dongyi.order.domain.Product;
 import serv.dongyi.order.repository.OrderRepository;
 
 import java.util.List;
+import java.util.Map;
 import java.util.Optional;
 
 public class OrderUseCaseTest {
@@ -31,8 +32,13 @@ public class OrderUseCaseTest {
     void createOrder_Success() {
         String owner = "demo@gmail.com";
         List<Product> content = List.of(
-                new Product("p1", 299, 2),
-                new Product("p2", 249, 1)
+                new Product("p1", 299, Map.of(
+                        "M", 2
+                )),
+                new Product("p2", 249, Map.of(
+                        "L", 3,
+                        "XL", 2
+                ))
         );
 
         Order mockOrder = new Order();

@@ -5,7 +5,7 @@ import java.util.concurrent.ExecutionException;
 import org.springframework.http.ResponseEntity;
 import serv.dongyi.order.domain.Order;
 import serv.dongyi.order.domain.Product;
-import serv.dongyi.order.domain.dto.CreateOrderRequest;
+import serv.dongyi.order.controller.dto.CreateOrderRequest;
 import serv.dongyi.order.usecases.OrderUseCase;
 
 import java.util.List;
@@ -49,12 +49,3 @@ public class OrderController {
         }
     }
 }
-
-//@RestController
-//@RequestMapping("/api")
-//public class Controller {
-//    @GetMapping()
-//    public String Handle() throws ExecutionException, InterruptedException {
-//        return "hello dongyi order service";
-//    }
-//}
