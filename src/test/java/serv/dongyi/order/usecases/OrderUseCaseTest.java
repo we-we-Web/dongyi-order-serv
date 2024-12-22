@@ -7,6 +7,7 @@ import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.mockito.Mock;
 import org.mockito.MockitoAnnotations;
+import org.springframework.boot.web.client.RestTemplateBuilder;
 import serv.dongyi.order.domain.Order;
 import serv.dongyi.order.domain.Product;
 import serv.dongyi.order.repository.OrderRepository;
@@ -24,18 +25,19 @@ public class OrderUseCaseTest {
 
     @BeforeEach
     void setUp() {
+        RestTemplateBuilder restTemplateBuilder = new RestTemplateBuilder();
         MockitoAnnotations.openMocks(this);
-        orderUseCase = new OrderUseCase(orderRepository);
+        orderUseCase = new OrderUseCase(restTemplateBuilder, orderRepository);
     }
 
     @Test
     void createOrder_Success() {
         String owner = "demo@gmail.com";
         List<Product> content = List.of(
-                new Product("p1", 299, Map.of(
+                new Product("2", 299, Map.of(
                         "M", 2
                 )),
-                new Product("p2", 249, Map.of(
+                new Product("3", 249, Map.of(
                         "L", 3,
                         "XL", 2
                 ))
