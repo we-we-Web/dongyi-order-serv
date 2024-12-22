@@ -6,8 +6,10 @@ import static org.mockito.Mockito.*;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.mockito.Mock;
+import org.mockito.Mockito;
 import org.mockito.MockitoAnnotations;
 import org.springframework.boot.web.client.RestTemplateBuilder;
+import org.springframework.mail.javamail.JavaMailSender;
 import serv.dongyi.order.domain.Order;
 import serv.dongyi.order.domain.Product;
 import serv.dongyi.order.repository.OrderRepository;
@@ -25,9 +27,11 @@ public class OrderUseCaseTest {
 
     @BeforeEach
     void setUp() {
+        JavaMailSender mockMailSender = Mockito.mock(JavaMailSender.class);
         RestTemplateBuilder restTemplateBuilder = new RestTemplateBuilder();
+        EmailService emailService = new EmailService(mockMailSender);
         MockitoAnnotations.openMocks(this);
-        orderUseCase = new OrderUseCase(restTemplateBuilder, orderRepository);
+        orderUseCase = new OrderUseCase(restTemplateBuilder, orderRepository, emailService);
     }
 
     @Test

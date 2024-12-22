@@ -21,10 +21,12 @@ import serv.dongyi.order.repository.OrderRepository;
 public class OrderUseCase {
     private final RestTemplate restTemplate;
     private final OrderRepository orderRepository;
+    private final EmailService emailService;
 
-    public OrderUseCase(RestTemplateBuilder builder, OrderRepository orderRepository) {
+    public OrderUseCase(RestTemplateBuilder builder, OrderRepository orderRepository, EmailService emailService) {
         this.restTemplate = builder.build();
         this.orderRepository = orderRepository;
+        this.emailService = emailService;
     }
 
     public Order createOrder(String owner, List<Product> content) {
@@ -41,7 +43,10 @@ public class OrderUseCase {
                 List.of("created " + now),
                 now
         );
-        return orderRepository.save(order);
+
+        order =  orderRepository.save(order);
+        emailService.sendOrderConfirmationEmail(order.getOwner(), order.getId());
+        return order;
     }
 
     public Order getOrder(String orderId, String owner) {
