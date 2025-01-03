@@ -12,14 +12,19 @@ import io.github.cdimascio.dotenv.Dotenv;
 public class AdminManager {
     private static AdminManager instance;
     private List<String> admins;
-    
-    private AdminManager() {
-        Dotenv dotenv = Dotenv.load();
-        String adminsEnv = dotenv.get("ADMINS");
 
-        if (adminsEnv != null && !adminsEnv.isEmpty()) {
-            admins = Arrays.asList(adminsEnv.split(","));
-        } else {
+    private AdminManager() {
+        try {
+            Dotenv dotenv = Dotenv.load();
+            String adminsEnv = dotenv.get("ADMINS");
+
+            if (adminsEnv != null && !adminsEnv.isEmpty()) {
+                admins = Arrays.asList(adminsEnv.split(","));
+            } else {
+                admins = List.of();
+            }
+        } catch (Exception e) {
+            System.err.println("Warning: Could not load .env file. Using default admin list.");
             admins = List.of();
         }
     }
