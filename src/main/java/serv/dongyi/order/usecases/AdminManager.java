@@ -1,7 +1,4 @@
 package serv.dongyi.order.usecases;
-
-import io.github.cdimascio.dotenv.Dotenv;
-
 import java.util.Arrays;
 import java.util.List;
 
@@ -15,9 +12,7 @@ public class AdminManager {
 
     private AdminManager() {
         try {
-            Dotenv dotenv = Dotenv.load();
-            String adminsEnv = dotenv.get("ADMINS");
-
+            String adminsEnv = System.getProperty("ADMINS");
             if (adminsEnv != null && !adminsEnv.isEmpty()) {
                 admins = Arrays.asList(adminsEnv.split(","));
             } else {
