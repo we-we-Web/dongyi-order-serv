@@ -48,4 +48,25 @@ public class OrderController {
             return ResponseEntity.status(404).build();
         }
     }
+
+    @PostMapping("/orders-get")
+    public ResponseEntity<?> getAllOrders(@RequestBody Map<String, Object> requestBody) {
+        String adminId = (String) requestBody.get("id");
+
+        if (adminId == null || adminId.isEmpty()) {
+            return ResponseEntity.status(400).body("Bad Request: Missing adminId");
+        }
+
+        try {
+            List<String> orderIds = orderUseCase.getAllOrderIds(adminId);
+            if (orderIds.isEmpty()) {
+                return ResponseEntity.status(404).body("No orders found");
+            }
+            return ResponseEntity.ok(orderIds);
+        } catch (IllegalArgumentException e) {
+            return ResponseEntity.status(403).body(e.getMessage());
+        } catch (Exception e) {
+            return ResponseEntity.status(500).body("Internal Server Error");
+        }
+    }
 }
