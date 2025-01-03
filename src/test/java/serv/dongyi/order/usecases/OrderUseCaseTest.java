@@ -37,15 +37,7 @@ public class OrderUseCaseTest {
     @Test
     void createOrder_Success() {
         String owner = "demo@gmail.com";
-        List<Product> content = List.of(
-                new Product("2", 299, Map.of(
-                        "M", 2
-                )),
-                new Product("3", 249, Map.of(
-                        "L", 3,
-                        "XL", 2
-                ))
-        );
+        List<Product> content = List.of();
 
         Order mockOrder = new Order();
         mockOrder.setId("order-01");

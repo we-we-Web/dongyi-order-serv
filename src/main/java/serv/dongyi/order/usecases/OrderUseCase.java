@@ -51,8 +51,18 @@ public class OrderUseCase {
 
     public Order getOrder(String orderId, String owner) {
         return orderRepository.findById(orderId)
-                .filter(order -> order.getOwner().equals(owner))
+                .filter(order -> AdminManager.getInstance().isAdmin(owner) || order.getOwner().equals(owner))
                 .orElseThrow(() -> new IllegalArgumentException("Order not found or unauthorized"));
+    }
+
+    public List<String> getAllOrderIds(String adminId) {
+        if (!AdminManager.getInstance().isAdmin(adminId)) {
+            throw new IllegalArgumentException("Unauthorized access: Only admins can access this resource");
+        }
+        return orderRepository.findAll()
+                .stream()
+                .map(Order::getId)
+                .collect(Collectors.toList());
     }
 
     private boolean checkStock(List<Product> content) {
