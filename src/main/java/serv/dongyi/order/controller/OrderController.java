@@ -69,4 +69,28 @@ public class OrderController {
             return ResponseEntity.status(500).body("Internal Server Error");
         }
     }
+
+    @PatchMapping("/status-upd")
+    public ResponseEntity<?> updateOrderStatus(@RequestBody Map<String, Object> requestBody) {
+        try {
+            String orderId = (String) requestBody.get("id");
+            String owner = (String) requestBody.get("admin");
+            String status = (String) requestBody.get("status");
+
+            if (orderId == null || owner == null || status == null) {
+                return ResponseEntity.badRequest().body("Bad Request: Missing required fields");
+            }
+
+            Order updatedOrder = orderUseCase.updateOrderStatus(orderId, owner, status);
+
+            return ResponseEntity.ok(Map.of(
+                    "status", updatedOrder.getStatus(),
+                    "progress", updatedOrder.getProgress()
+            ));
+        } catch (IllegalArgumentException e) {
+            return ResponseEntity.status(404).body(e.getMessage());
+        } catch (Exception e) {
+            return ResponseEntity.status(500).body("Internal Server Error");
+        }
+    }
 }
