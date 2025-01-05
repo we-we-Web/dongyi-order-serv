@@ -65,6 +65,23 @@ public class OrderUseCase {
                 .collect(Collectors.toList());
     }
 
+    public Order updateOrderStatus(String orderId, String admin, String status) {
+        return orderRepository.findById(orderId)
+                .filter(order -> AdminManager.getInstance().isAdmin(admin)) // 確保只有訂單擁有者可以操作
+                .map(order -> {
+                    order.setStatus(status);
+
+                    List<String> progress = order.getProgress();
+                    String now = ZonedDateTime.now().toString();
+                    progress.add(status + " " + now);
+
+                    order.setProgress(progress);
+
+                    return orderRepository.save(order);
+                })
+                .orElseThrow(() -> new IllegalArgumentException("Order not found or unauthorized"));
+    }
+
     private boolean checkStock(List<Product> content) {
         List<Map<String, Object>> requestBody = content.stream()
                 .map(product -> Map.of(
